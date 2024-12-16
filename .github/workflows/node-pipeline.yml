@@ -18,3 +18,6 @@ jobs:
 
             - name: Install Dependencies
               run: npm install
+            
+            - name : Deployment
+              run: npm start
