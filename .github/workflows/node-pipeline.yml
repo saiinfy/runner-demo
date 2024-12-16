@@ -42,8 +42,10 @@ jobs:
                 path: npm-audit-report.txt
 
 
-    Dependencies:
+    deployment:
         runs-on: self-hosted
+        needs: security
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
