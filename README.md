@@ -1,1 +1,1 @@
-# runner-demo
+# demo-security-pipeline
