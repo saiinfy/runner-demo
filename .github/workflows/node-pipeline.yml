@@ -6,6 +6,41 @@ on:
       - main
  
 jobs:
+    security:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '16'
+
+            - name: Install dependencies
+              run: npm install
+            
+            - name: Install Semgrep
+              run: pip install semgrep
+            
+            - name: Run SAST using Semgrep
+              run: semgrep --config p/ci > semgrep-report.txt
+
+            - name : Upload Semgrep report
+              uses: actions/upload-artifact@v3
+              with:
+                name: semgrep-report
+                path: semgrep-report.txt
+            
+            - name: Run Audit with SCA for Node
+              run: npm audit --json > npm-audit-report.txt || true
+            
+            - name : Upload Audit report
+              uses: actions/upload-artifact@v3
+              with:
+                name: Node SCA Analysis
+                path: npm-audit-report.txt
+
 
     Dependencies:
         runs-on: self-hosted
@@ -20,4 +55,4 @@ jobs:
               run: npm install
             
             - name : Deployment
-              run: npm start
+              run: npm start &
